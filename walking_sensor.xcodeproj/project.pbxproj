@@ -7,18 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1746CAF1295E8EF900DAC8A7 /* HistoryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1746CAF0295E8EF900DAC8A7 /* HistoryData.swift */; };
 		17DB4342295D51CF005B0821 /* walking_sensorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17DB4341295D51CF005B0821 /* walking_sensorApp.swift */; };
 		17DB4344295D51CF005B0821 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17DB4343295D51CF005B0821 /* ContentView.swift */; };
 		17DB4346295D51D0005B0821 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 17DB4345295D51D0005B0821 /* Assets.xcassets */; };
 		17DB4349295D51D0005B0821 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 17DB4348295D51D0005B0821 /* Preview Assets.xcassets */; };
+		17DB4352295D5738005B0821 /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = 17DB4351295D5738005B0821 /* SwiftUICharts */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1746CAF0295E8EF900DAC8A7 /* HistoryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryData.swift; sourceTree = "<group>"; };
 		17DB433E295D51CF005B0821 /* walking_sensor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = walking_sensor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		17DB4341295D51CF005B0821 /* walking_sensorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = walking_sensorApp.swift; sourceTree = "<group>"; };
 		17DB4343295D51CF005B0821 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		17DB4345295D51D0005B0821 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		17DB4348295D51D0005B0821 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		17DB434F295D5258005B0821 /* walking-sensor-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "walking-sensor-Info.plist"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -26,12 +30,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				17DB4352295D5738005B0821 /* SwiftUICharts in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1746CAEF295E60FC00DAC8A7 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				1746CAF0295E8EF900DAC8A7 /* HistoryData.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		17DB4335295D51CF005B0821 = {
 			isa = PBXGroup;
 			children = (
@@ -51,6 +64,8 @@
 		17DB4340295D51CF005B0821 /* walking_sensor */ = {
 			isa = PBXGroup;
 			children = (
+				1746CAEF295E60FC00DAC8A7 /* Models */,
+				17DB434F295D5258005B0821 /* walking-sensor-Info.plist */,
 				17DB4341295D51CF005B0821 /* walking_sensorApp.swift */,
 				17DB4343295D51CF005B0821 /* ContentView.swift */,
 				17DB4345295D51D0005B0821 /* Assets.xcassets */,
@@ -83,6 +98,9 @@
 			dependencies = (
 			);
 			name = walking_sensor;
+			packageProductDependencies = (
+				17DB4351295D5738005B0821 /* SwiftUICharts */,
+			);
 			productName = walking_sensor;
 			productReference = 17DB433E295D51CF005B0821 /* walking_sensor.app */;
 			productType = "com.apple.product-type.application";
@@ -111,6 +129,9 @@
 				Base,
 			);
 			mainGroup = 17DB4335295D51CF005B0821;
+			packageReferences = (
+				17DB4350295D5738005B0821 /* XCRemoteSwiftPackageReference "ChartView" */,
+			);
 			productRefGroup = 17DB433F295D51CF005B0821 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -139,6 +160,7 @@
 			files = (
 				17DB4344295D51CF005B0821 /* ContentView.swift in Sources */,
 				17DB4342295D51CF005B0821 /* walking_sensorApp.swift in Sources */,
+				1746CAF1295E8EF900DAC8A7 /* HistoryData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -270,6 +292,8 @@
 				DEVELOPMENT_TEAM = QUYRZ8YY36;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "walking-sensor-Info.plist";
+				INFOPLIST_KEY_NSMotionUsageDescription = "to collect users pedometer";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -299,6 +323,8 @@
 				DEVELOPMENT_TEAM = QUYRZ8YY36;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "walking-sensor-Info.plist";
+				INFOPLIST_KEY_NSMotionUsageDescription = "to collect users pedometer";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -339,6 +365,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		17DB4350295D5738005B0821 /* XCRemoteSwiftPackageReference "ChartView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AppPear/ChartView";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		17DB4351295D5738005B0821 /* SwiftUICharts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 17DB4350295D5738005B0821 /* XCRemoteSwiftPackageReference "ChartView" */;
+			productName = SwiftUICharts;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 17DB4336295D51CF005B0821 /* Project object */;
 }
