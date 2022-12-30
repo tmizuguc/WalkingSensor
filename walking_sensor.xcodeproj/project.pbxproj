@@ -7,7 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1746CAF1295E8EF900DAC8A7 /* HistoryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1746CAF0295E8EF900DAC8A7 /* HistoryData.swift */; };
+		1746CAF1295E8EF900DAC8A7 /* MotionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1746CAF0295E8EF900DAC8A7 /* MotionManager.swift */; };
+		1746CAF7295E91F600DAC8A7 /* History.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1746CAF5295E91F600DAC8A7 /* History.xcdatamodeld */; };
+		1746CB05295E9B2000DAC8A7 /* Persistent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1746CB04295E9B2000DAC8A7 /* Persistent.swift */; };
+		1746CB09295EA52E00DAC8A7 /* HistoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1746CB08295EA52E00DAC8A7 /* HistoryManager.swift */; };
 		17DB4342295D51CF005B0821 /* walking_sensorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17DB4341295D51CF005B0821 /* walking_sensorApp.swift */; };
 		17DB4344295D51CF005B0821 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17DB4343295D51CF005B0821 /* ContentView.swift */; };
 		17DB4346295D51D0005B0821 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 17DB4345295D51D0005B0821 /* Assets.xcassets */; };
@@ -16,7 +19,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		1746CAF0295E8EF900DAC8A7 /* HistoryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryData.swift; sourceTree = "<group>"; };
+		1746CAF0295E8EF900DAC8A7 /* MotionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionManager.swift; sourceTree = "<group>"; };
+		1746CAF6295E91F600DAC8A7 /* History.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = History.xcdatamodel; sourceTree = "<group>"; };
+		1746CB04295E9B2000DAC8A7 /* Persistent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistent.swift; sourceTree = "<group>"; };
+		1746CB08295EA52E00DAC8A7 /* HistoryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryManager.swift; sourceTree = "<group>"; };
 		17DB433E295D51CF005B0821 /* walking_sensor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = walking_sensor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		17DB4341295D51CF005B0821 /* walking_sensorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = walking_sensorApp.swift; sourceTree = "<group>"; };
 		17DB4343295D51CF005B0821 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -40,9 +46,19 @@
 		1746CAEF295E60FC00DAC8A7 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				1746CAF0295E8EF900DAC8A7 /* HistoryData.swift */,
+				1746CB08295EA52E00DAC8A7 /* HistoryManager.swift */,
+				1746CAF0295E8EF900DAC8A7 /* MotionManager.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		1746CB0B295EAAD100DAC8A7 /* Databases */ = {
+			isa = PBXGroup;
+			children = (
+				1746CAF5295E91F600DAC8A7 /* History.xcdatamodeld */,
+				1746CB04295E9B2000DAC8A7 /* Persistent.swift */,
+			);
+			path = Databases;
 			sourceTree = "<group>";
 		};
 		17DB4335295D51CF005B0821 = {
@@ -64,6 +80,7 @@
 		17DB4340295D51CF005B0821 /* walking_sensor */ = {
 			isa = PBXGroup;
 			children = (
+				1746CB0B295EAAD100DAC8A7 /* Databases */,
 				1746CAEF295E60FC00DAC8A7 /* Models */,
 				17DB434F295D5258005B0821 /* walking-sensor-Info.plist */,
 				17DB4341295D51CF005B0821 /* walking_sensorApp.swift */,
@@ -160,7 +177,10 @@
 			files = (
 				17DB4344295D51CF005B0821 /* ContentView.swift in Sources */,
 				17DB4342295D51CF005B0821 /* walking_sensorApp.swift in Sources */,
-				1746CAF1295E8EF900DAC8A7 /* HistoryData.swift in Sources */,
+				1746CB05295E9B2000DAC8A7 /* Persistent.swift in Sources */,
+				1746CB09295EA52E00DAC8A7 /* HistoryManager.swift in Sources */,
+				1746CAF7295E91F600DAC8A7 /* History.xcdatamodeld in Sources */,
+				1746CAF1295E8EF900DAC8A7 /* MotionManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -384,6 +404,19 @@
 			productName = SwiftUICharts;
 		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		1746CAF5295E91F600DAC8A7 /* History.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				1746CAF6295E91F600DAC8A7 /* History.xcdatamodel */,
+			);
+			currentVersion = 1746CAF6295E91F600DAC8A7 /* History.xcdatamodel */;
+			path = History.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 17DB4336295D51CF005B0821 /* Project object */;
 }
