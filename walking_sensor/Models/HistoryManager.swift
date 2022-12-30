@@ -1,4 +1,5 @@
 import CoreMotion
+import CoreData
 
 struct HistoryData {
     var user_uuid: String
@@ -11,6 +12,7 @@ struct HistoryData {
 }
 
 struct PedometerData {
+    var unixtime: Int
     var period: Double
     var steps: Int
     var stride: Double
@@ -63,11 +65,13 @@ class HistoryManager: NSObject, ObservableObject {
      CMPedometerDataからPedometerDataへ変換する
      */
     func toPedometerData(pedometer: CMPedometerData) -> PedometerData {
+        let unixtime: Int = Int(NSDate().timeIntervalSince1970)
         let steps: Int = pedometer.numberOfSteps.intValue
         let distance: Double = pedometer.distance?.doubleValue ?? 0
         let period: Double = pedometer.endDate.timeIntervalSince(pedometer.startDate)
         let avarage_active_pace: Double = pedometer.averageActivePace?.doubleValue ?? 0
         return PedometerData(
+            unixtime: unixtime,
             period: period,
             steps: steps,
             stride: distance / Double(steps),
@@ -86,22 +90,34 @@ class HistoryManager: NSObject, ObservableObject {
     /*
      PedometerDataをSQLiteのPedometerに格納する
      */
-    func savePedometerData() {
-        
+    func savePedometerData(pedometerData: PedometerData, exam_id: Int, context: NSManagedObjectContext) {
+        let pedometer = Pedometer(context: context)
+        pedometer.exam_id = Int32(exam_id)
+        pedometer.unixtime = Int32(pedometerData.unixtime)
+        pedometer.period = pedometerData.period
+        pedometer.steps = Int32(pedometerData.steps)
+        pedometer.stride = pedometerData.stride
+        pedometer.speed = pedometerData.speed
+        pedometer.average_active_pace = pedometerData.average_active_pace
+        pedometer.distance = pedometerData.distance
+        try? context.save()
     }
     
     /*
-     Pedometerのpedometer_idの最大値を取得する
+     SQLiteのHistoryに格納する
      */
-    func getMaxPedmeterId() -> Int {
-        return 1
-    }
-    
-    /*
-     Pedometerのpedometer_idの最大値を取得する
-     */
-    func getMaxSensorId() -> Int {
-        return 1
+    func saveHistoryData(user_id: String, device_id: String,
+                         exam_type_id: Int, exam_id: Int,
+                         start_unixtime: Int, end_unixtime:Int,
+                         context: NSManagedObjectContext) {
+        let history = History(context: context)
+        history.user_uuid = user_id
+        history.device_uuid = device_id
+        history.exam_type_id = Int32(exam_type_id)
+        history.exam_id = Int32(exam_id)
+        history.start_unixtime = Int32(start_unixtime)
+        history.end_unixtime = Int32(end_unixtime)
+        try? context.save()
     }
     
 }
