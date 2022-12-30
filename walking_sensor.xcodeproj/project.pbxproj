@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1746CAF1295E8EF900DAC8A7 /* MotionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1746CAF0295E8EF900DAC8A7 /* MotionManager.swift */; };
+		1746CAF1295E8EF900DAC8A7 /* MotionRecordManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1746CAF0295E8EF900DAC8A7 /* MotionRecordManager.swift */; };
 		1746CAF7295E91F600DAC8A7 /* History.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1746CAF5295E91F600DAC8A7 /* History.xcdatamodeld */; };
 		1746CB05295E9B2000DAC8A7 /* Persistent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1746CB04295E9B2000DAC8A7 /* Persistent.swift */; };
 		1746CB09295EA52E00DAC8A7 /* HistoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1746CB08295EA52E00DAC8A7 /* HistoryManager.swift */; };
@@ -19,7 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		1746CAF0295E8EF900DAC8A7 /* MotionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionManager.swift; sourceTree = "<group>"; };
+		1746CAF0295E8EF900DAC8A7 /* MotionRecordManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionRecordManager.swift; sourceTree = "<group>"; };
 		1746CAF6295E91F600DAC8A7 /* History.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = History.xcdatamodel; sourceTree = "<group>"; };
 		1746CB04295E9B2000DAC8A7 /* Persistent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistent.swift; sourceTree = "<group>"; };
 		1746CB08295EA52E00DAC8A7 /* HistoryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryManager.swift; sourceTree = "<group>"; };
@@ -47,7 +47,7 @@
 			isa = PBXGroup;
 			children = (
 				1746CB08295EA52E00DAC8A7 /* HistoryManager.swift */,
-				1746CAF0295E8EF900DAC8A7 /* MotionManager.swift */,
+				1746CAF0295E8EF900DAC8A7 /* MotionRecordManager.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -180,7 +180,7 @@
 				1746CB05295E9B2000DAC8A7 /* Persistent.swift in Sources */,
 				1746CB09295EA52E00DAC8A7 /* HistoryManager.swift in Sources */,
 				1746CAF7295E91F600DAC8A7 /* History.xcdatamodeld in Sources */,
-				1746CAF1295E8EF900DAC8A7 /* MotionManager.swift in Sources */,
+				1746CAF1295E8EF900DAC8A7 /* MotionRecordManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

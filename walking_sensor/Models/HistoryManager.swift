@@ -81,10 +81,25 @@ class HistoryManager: NSObject, ObservableObject {
     }
     
     /*
-     MotionSensorDataをSQLiteのPedometerに格納する
+     MotionSensorリストをSQLiteのPedometerに格納する
      */
-    func saveMotionSensorData() {
-        
+    func saveMotionSensorData(motionSensorData: MotionSensorData, exam_id: Int, context: NSManagedObjectContext) {
+        let motionSensor = MotionSensor(context: context)
+        motionSensor.exam_id = Int32(exam_id)
+        motionSensor.unixtime = Int32(motionSensorData.unixtime)
+        motionSensor.acceleration_x = motionSensorData.acceleration_x
+        motionSensor.acceleration_y = motionSensorData.acceleration_y
+        motionSensor.acceleration_z = motionSensorData.acceleration_z
+        motionSensor.rotation_x = motionSensorData.rotation_x
+        motionSensor.rotation_y = motionSensorData.rotation_y
+        motionSensor.rotation_z = motionSensorData.rotation_z
+        motionSensor.gravity_x = motionSensorData.gravity_x
+        motionSensor.gravity_y = motionSensorData.gravity_y
+        motionSensor.gravity_z = motionSensorData.gravity_z
+        motionSensor.pitch = motionSensorData.pitch
+        motionSensor.yaw = motionSensorData.yaw
+        motionSensor.roll = motionSensorData.roll
+        try? context.save()
     }
     
     /*

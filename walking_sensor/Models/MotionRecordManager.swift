@@ -1,7 +1,7 @@
 import CoreMotion
 import CoreData
 
-class MotionManager: NSObject, ObservableObject {
+class MotionRecordManager: NSObject, ObservableObject {
     
     let motionManager = CMMotionManager()
     let pedometerManager = CMPedometer()
@@ -30,6 +30,10 @@ class MotionManager: NSObject, ObservableObject {
                 if (error == nil) {
                     let motionData = self.historyManager.toMotionSensorData(deviceMotion: data!)
                     self.motionSensorDataList.append(motionData)
+                    // 90,000データ（50Hzで30分）以上の場合は、古いものから削除していく
+                    if (self.motionSensorDataList.count > 90000) {
+                        self.motionSensorDataList.removeFirst()
+                    }
                 }
             }
         }
@@ -49,40 +53,45 @@ class MotionManager: NSObject, ObservableObject {
     /*
      センサー取得終了処理
      */
-    func stop(context: NSManagedObjectContext, user_id: String, device_id: String, exam_id: Int, exam_type_id: Int) {
+    func stop() {
         if (!isStarted) {
             return
         }
         motionManager.stopDeviceMotionUpdates()
         pedometerManager.stopUpdates()
-        
-        // 各種データの保存
-        if (motionSensorDataList.count >= 1 && pedometerData != nil) {
-            end_unixtime = Int(NSDate().timeIntervalSince1970)
-            
-            historyManager.saveMotionSensorData()
-            historyManager.savePedometerData(
-                pedometerData: pedometerData!, exam_id: exam_id,
-                context: context)
-            historyManager.saveHistoryData(
-                user_id: user_id, device_id: device_id, exam_type_id: exam_type_id,
-                exam_id: exam_id, start_unixtime: start_unixtime, end_unixtime: end_unixtime,
-                context: context)
-        }
         isStarted = false
     }
     
     /*
-     センサーのキャッシュ削除処理
+     センサーの保存処理
      */
-    func clearData() {
+    func finish(context: NSManagedObjectContext, user_id: String, device_id: String, exam_id: Int, exam_type_id: Int) {
         if (isStarted) {
             return
         }
-        motionSensorDataList = []
-        pedometerData = nil
+        if (motionSensorDataList.count >= 1 && pedometerData != nil) {
+            end_unixtime = Int(NSDate().timeIntervalSince1970)
+            // センサー情報
+            for motionSensorData in motionSensorDataList {
+                historyManager.saveMotionSensorData(
+                    motionSensorData: motionSensorData, exam_id: exam_id,
+                    context: context)
+            }
+            // 歩行情報
+            historyManager.savePedometerData(
+                pedometerData: pedometerData!, exam_id: exam_id,
+                context: context)
+            // テスト情報
+            historyManager.saveHistoryData(
+                user_id: user_id, device_id: device_id, exam_type_id: exam_type_id,
+                exam_id: exam_id, start_unixtime: start_unixtime, end_unixtime: end_unixtime,
+                context: context)
+            // キャッシュリセット
+            motionSensorDataList = []
+            pedometerData = nil
+        }
     }
-    
+        
     /*
      最新のPedometerデータを取得
      */
