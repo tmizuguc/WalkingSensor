@@ -1,35 +1,45 @@
 import SwiftUI
 import CoreData
 
-struct ContentView: View {
+struct DebugView: View {
     @Environment(\.managedObjectContext) var context
     
-    @FetchRequest(sortDescriptors: [SortDescriptor(\.unixtime)])
+    @FetchRequest(sortDescriptors: [SortDescriptor(\.exam_id), SortDescriptor(\.unixtime)])
     var pedometers: FetchedResults<Pedometer>
     
-    @FetchRequest(sortDescriptors: [SortDescriptor(\.unixtime)])
+    @FetchRequest(sortDescriptors: [SortDescriptor(\.exam_id), SortDescriptor(\.unixtime)])
     var motionSensors: FetchedResults<MotionSensor>
     
-    @FetchRequest(sortDescriptors: [SortDescriptor(\.start_unixtime)])
+    @FetchRequest(sortDescriptors: [SortDescriptor(\.exam_id)])
     var histories: FetchedResults<History>
     
     @ObservedObject var motionRecordManager = MotionRecordManager()
     
-    let user_id: String = "User1"
+    @State private var userId: String = "User1"
     let deviceId: String = UIDevice.current.identifierForVendor!.uuidString
-    let exam_type_id = 2
+    @State private var examTypeId: Int = 0
         
     var body: some View {
 
         Spacer()
+        
+        HStack {
+            Text("UserId")
+            TextField("userId", text: $userId)
+        }
+        HStack {
+            Text("ExamTypeId")
+            TextField("ExamTypeId", value: $examTypeId, formatter: NumberFormatter())
+        }
+        
         
         HStack(spacing: 20){
             Button(action: { motionRecordManager.start(motionInterval: 0.1) } ){ Text("Start") }
             Button(action: { motionRecordManager.stop() } ){ Text("Stop") }
             Button(action: {
                 motionRecordManager.finish(
-                    context: context, user_id: user_id, device_id: deviceId,
-                    exam_id: getNextExamId(), exam_type_id: exam_type_id)
+                    context: context, user_id: userId, device_id: deviceId,
+                    exam_id: getNextExamId(), exam_type_id: examTypeId)
             } ){ Text("Finish") }
         }.buttonStyle(.bordered).padding(EdgeInsets(top: 30, leading: 0, bottom: 0, trailing: 0))
     
@@ -52,8 +62,9 @@ struct ContentView: View {
         
         List {
             ForEach(histories) { history in
-                Text("\(history.exam_id): \(history.start_unixtime) ~ \(history.end_unixtime)")
+                Text("\(history.exam_id): \(unixtimeToDateString(unixtime: Int(history.start_unixtime))) ~ \(unixtimeToDateString(unixtime: Int(history.end_unixtime)))")
             }
+            .onDelete(perform: deleteHistory)
         }
     }
 
@@ -65,10 +76,28 @@ struct ContentView: View {
         return Int(histories[histories.count-1].exam_id) + 1
     }
     
+    // Historyを削除し、それに紐づくMotionSensorとPedometerも削除する。
+    func deleteHistory(offsets: IndexSet) {
+        offsets.forEach { index in
+            let exam_id = histories[index].exam_id
+            context.delete(histories[index])
+            for p_index in (pedometers.indices) {
+                if (pedometers[p_index].exam_id == exam_id) {
+                    context.delete(pedometers[p_index])
+                }
+            }
+            for m_index in (motionSensors.indices) {
+                if (motionSensors[m_index].exam_id == exam_id) {
+                    context.delete(motionSensors[m_index])
+                }
+            }
+        }
+        try? context.save()
+    }
 }
 
-struct ContentView_Previews: PreviewProvider {
+struct DebugView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        DebugView()
     }
 }
