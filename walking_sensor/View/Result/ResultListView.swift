@@ -12,13 +12,13 @@ struct ResultListView: View {
     @FetchRequest(sortDescriptors: [SortDescriptor(\.exam_id)])
     var histories: FetchedResults<History>
     
-    let exam_type_id: Int
+    let examTypeId: Int
     
     var body: some View {
         List {
             ForEach(histories) { history in
                 Group {
-                    if history.exam_type_id == exam_type_id {
+                    if history.exam_type_id == examTypeId {
                         NavigationLink {
                             ResultView(
                                 history: history,

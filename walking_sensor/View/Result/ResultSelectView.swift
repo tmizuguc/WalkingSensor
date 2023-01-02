@@ -5,7 +5,7 @@ struct ResultSelectView: View {
         List {
             // 歩行エクササイズの結果画面
             NavigationLink {
-                ResultListView(exam_type_id: 0)
+                ResultListView(examTypeId: 0)
             } label: {
                 HStack {
                     Image(systemName: "pencil")
@@ -15,7 +15,7 @@ struct ResultSelectView: View {
             
             // 歩行機能検査の結果画面
             NavigationLink {
-                ResultListView(exam_type_id: 1)
+                ResultListView(examTypeId: 1)
             } label: {
                 HStack {
                     Image(systemName: "pencil")

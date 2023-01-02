@@ -4,8 +4,11 @@ import SwiftUICharts
 struct ResultView: View {
     let history: History
     let pedometer: Pedometer
+    var showFinishButton: Bool = false
+    @State var isFinishButton = false
     
     var body: some View {
+        
         List {
             HStack {
                 Text("開始時間")
@@ -41,7 +44,8 @@ struct ResultView: View {
             HStack {
                 Text("歩行速度")
                 Spacer()
-                Text("1分あたり \(String(format: "%.1f", pedometer.speed)) メートル")
+                let speed = 60 * pedometer.speed
+                Text("1分あたり \(String(format: "%.1f", speed)) メートル")
             }
             
             HStack {
@@ -57,6 +61,16 @@ struct ResultView: View {
             }
         }
         
+        if showFinishButton {
+            Button(action: {
+                isFinishButton = true
+            } ){
+                Text("ホームに戻る").bold()
+            }
+        }
         
+        NavigationLink(
+            destination: HomeView(),
+            isActive: $isFinishButton) { EmptyView() }
     }
 }

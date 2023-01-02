@@ -30,8 +30,8 @@ class MotionRecordManager: NSObject, ObservableObject {
                 if (error == nil) {
                     let motionData = self.historyManager.toMotionSensorData(deviceMotion: data!)
                     self.motionSensorDataList.append(motionData)
-                    // 90,000データ（50Hzで30分）以上の場合は、古いものから削除していく
-                    if (self.motionSensorDataList.count > 90000) {
+                    // 15,000データ（50Hzで5分）以上の場合は、古いものから削除していく
+                    if (self.motionSensorDataList.count > 15000) {
                         self.motionSensorDataList.removeFirst()
                     }
                 }
@@ -87,9 +87,16 @@ class MotionRecordManager: NSObject, ObservableObject {
                 exam_id: exam_id, start_unixtime: start_unixtime, end_unixtime: end_unixtime,
                 context: context)
             // キャッシュリセット
-            motionSensorDataList = []
-            pedometerData = nil
+            clear()
         }
+    }
+    
+    /*
+     キャッシュリセット
+     */
+    func clear() {
+        motionSensorDataList = []
+        pedometerData = nil
     }
         
     /*
