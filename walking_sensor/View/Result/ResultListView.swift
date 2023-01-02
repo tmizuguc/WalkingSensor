@@ -15,6 +15,7 @@ struct ResultListView: View {
     let examTypeId: Int
     
     var body: some View {
+        Text("右スワイプでデータを削除できます。")
         List {
             ForEach(histories) { history in
                 Group {

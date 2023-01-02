@@ -60,6 +60,7 @@ class MotionRecordManager: NSObject, ObservableObject {
         motionManager.stopDeviceMotionUpdates()
         pedometerManager.stopUpdates()
         isStarted = false
+        end_unixtime = Int(NSDate().timeIntervalSince1970)
     }
     
     /*
@@ -70,7 +71,6 @@ class MotionRecordManager: NSObject, ObservableObject {
             return
         }
         if (motionSensorDataList.count >= 1 && pedometerData != nil) {
-            end_unixtime = Int(NSDate().timeIntervalSince1970)
             // センサー情報
             for motionSensorData in motionSensorDataList {
                 historyManager.saveMotionSensorData(

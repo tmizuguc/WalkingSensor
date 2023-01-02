@@ -34,6 +34,16 @@ struct HomeView: View {
                     Text("結果表示")
                 }
             }
+            
+            // 設定画面
+            NavigationLink {
+                SettingView()
+            } label: {
+                HStack {
+                    Image(systemName: "gearshape")
+                    Text("設定")
+                }
+            }
 
             // デバッグ画面
             NavigationLink {

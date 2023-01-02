@@ -25,7 +25,7 @@ struct ResultView: View {
             HStack {
                 Text("エクササイズ時間")
                 Spacer()
-                Text("\(String(format: "%.0f", pedometer.period)) 秒")
+                Text("\(Int(floor(Double(history.end_unixtime) - Double(history.start_unixtime)))) 秒")
             }
             
             HStack {
@@ -59,13 +59,13 @@ struct ResultView: View {
                 Spacer()
                 Text("\(String(format: "%.1f", pedometer.distance)) メートル")
             }
-        }
-        
-        if showFinishButton {
-            Button(action: {
-                isFinishButton = true
-            } ){
-                Text("ホームに戻る").bold()
+            
+            if showFinishButton {
+                Button(action: {
+                    isFinishButton = true
+                } ){
+                    Text("ホームに戻る").bold()
+                }
             }
         }
         

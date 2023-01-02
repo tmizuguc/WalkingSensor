@@ -12,7 +12,8 @@ struct WalkingExerciseView: View {
     let motionInterval: Double = 0.1
     let deviceId: String = UIDevice.current.identifierForVendor!.uuidString
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-    @State var currentTime: Int = 0
+    @State var showAlert = false
+    @State var currentTime: Int = -3 // カウントダウン分を引いている
     @State var isReturnButton = false
     @State var isFinishButton = false
     @ObservedObject var motionRecordManager = MotionRecordManager()
@@ -28,9 +29,28 @@ struct WalkingExerciseView: View {
     var body: some View {
         
         Group {
-            Text("歩行エクササイズ").font(.title)
-            Text("\(getTimeString(time: currentTime))").font(.largeTitle)
-            Text("\(String(floor(motionRecordManager.pedometerData?.distance ?? 0))) M").font(.largeTitle)
+            // 歩行開始前にカウントダウンをする
+            if currentTime < 0 {
+                Group {
+                    Text("\(-1 * currentTime)").font(.largeTitle)
+                }.onChange(of: currentTime) { _ in
+                    speechText(text: "\(-1 * currentTime)")
+                }.onAppear{
+                    speechText(text: "\(-1 * currentTime)")
+                }
+            }
+            
+            if currentTime >= 0 {
+                Group {
+                    Text("歩行エクササイズ").font(.title)
+                    Text("\(getTimeString(time: currentTime))").font(.largeTitle)
+                    Text("\(String(floor(motionRecordManager.pedometerData?.distance ?? 0))) M").font(.largeTitle)
+                    
+                }.onAppear{
+                    speechText(text: "エクササイズを開始します")
+                    motionRecordManager.start(motionInterval: motionInterval)
+                }
+            }
             
             // 歩行が終了したら「最初から」と「保存」ボタンを表示する
             if currentTime >= (minutes*60+seconds) {
@@ -40,15 +60,19 @@ struct WalkingExerciseView: View {
                         motionRecordManager.clear()
                         presentationMode.wrappedValue.dismiss()
                     } ){
-                        Text("最初から")
+                        Text("データを削除")
                     }
                     .buttonStyle(.bordered)
                     
                     Button(action: {
-                        motionRecordManager.finish(
-                            context: context, user_id: userId, device_id: deviceId,
-                            exam_id: getNextExamId(), exam_type_id: examTypeId)
-                        isFinishButton = true
+                        if motionRecordManager.pedometerData == nil {
+                            showAlert = true
+                        } else {
+                            motionRecordManager.finish(
+                                context: context, user_id: userId, device_id: deviceId,
+                                exam_id: getNextExamId(), exam_type_id: examTypeId)
+                            isFinishButton = true
+                        }
                     } ){
                         Text("保存")
                     }
@@ -57,12 +81,13 @@ struct WalkingExerciseView: View {
                         speechText(text: "エクササイズを終了します")
                         motionRecordManager.stop()
                     }
+                    .alert("歩行データがありません", isPresented: $showAlert) {
+                        Button("OK") { /* Do Nothing */}
+                    } message: {
+                        Text("歩行データを取得できませんでした。再度やりなおしてください。")
+                    }
                 }
             }
-        }
-        .onAppear{
-            speechText(text: "エクササイズを開始します")
-            motionRecordManager.start(motionInterval: motionInterval)
         }
         .onReceive(timer) { _ in
             currentTime += 1

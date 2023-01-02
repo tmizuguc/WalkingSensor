@@ -11,6 +11,9 @@ struct WalkingExamView: View {
     let meter: Int
     let motionInterval: Double = 0.1
     let deviceId: String = UIDevice.current.identifierForVendor!.uuidString
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    @State var currentTime: Int = -3 // カウントダウン分を引いている
+    @State var showAlert = false
     @State var isReturnButton = false
     @State var isFinishButton = false
     @ObservedObject var motionRecordManager = MotionRecordManager()
@@ -26,45 +29,74 @@ struct WalkingExamView: View {
     var body: some View {
         
         Group {
-            if examSpeedTypeId == 0 {
-                Text("最大速度歩行").font(.title)
+            // 歩行開始前にカウントダウンをする
+            if currentTime < 0 {
+                Group {
+                    Text("\(-1 * currentTime)").font(.largeTitle)
+                }.onChange(of: currentTime) { _ in
+                    speechText(text: "\(-1 * currentTime)")
+                }.onAppear{
+                    speechText(text: "\(-1 * currentTime)")
+                }
             }
-            if examSpeedTypeId == 1 {
-                Text("快適速度歩行").font(.title)
-            }
-            Text("\(String(floor(motionRecordManager.pedometerData?.distance ?? 0))) M").font(.largeTitle)
             
-            // 歩行が終了したら「最初から」と「保存」ボタンを表示する
-            if motionRecordManager.pedometerData?.distance ?? 0 >= Double(meter) {
-                  
-                HStack {
-                    Button(action: {
-                        motionRecordManager.clear()
-                        presentationMode.wrappedValue.dismiss()
-                    } ){
-                        Text("最初から")
+            if currentTime >= 0 {
+                Group {
+                    if examSpeedTypeId == 0 {
+                        Text("最大速度歩行").font(.title)
                     }
-                    .buttonStyle(.bordered)
+                    if examSpeedTypeId == 1 {
+                        Text("快適速度歩行").font(.title)
+                    }
+                    Text("\(String(floor(motionRecordManager.pedometerData?.distance ?? 0))) M").font(.largeTitle)
+                }.onAppear{
+                    speechText(text: "検査を開始します")
+                    motionRecordManager.start(motionInterval: motionInterval)
+                }
+                
+                // 歩行が終了したら「最初から」と「保存」ボタンを表示する
+                if motionRecordManager.pedometerData?.distance ?? 0 >= Double(meter) {
                     
-                    Button(action: {
-                        motionRecordManager.finish(
-                            context: context, user_id: userId, device_id: deviceId,
-                            exam_id: getNextExamId(), exam_type_id: examTypeId)
-                        isFinishButton = true
-                    } ){
-                        Text("保存")
-                    }
-                    .buttonStyle(.bordered)
-                    .onAppear {
-                        speechText(text: "検査を終了します")
-                        motionRecordManager.stop()
+                    HStack {
+                        Button(action: {
+                            motionRecordManager.clear()
+                            presentationMode.wrappedValue.dismiss()
+                        } ){
+                            Text("最初から")
+                        }
+                        .buttonStyle(.bordered)
+                        
+                        Button(action: {
+                            if motionRecordManager.pedometerData == nil {
+                                showAlert = true
+                            } else {
+                                motionRecordManager.finish(
+                                    context: context, user_id: userId, device_id: deviceId,
+                                    exam_id: getNextExamId(), exam_type_id: examTypeId)
+                                isFinishButton = true
+                            }
+                        } ){
+                            Text("保存")
+                        }
+                        .buttonStyle(.bordered)
+                        .onAppear {
+                            speechText(text: "検査を終了します")
+                            motionRecordManager.stop()
+                        }
+                        .alert("歩行データがありません", isPresented: $showAlert) {
+                            Button("OK") { /* Do Nothing */}
+                        } message: {
+                            Text("歩行データを取得できませんでした。再度やりなおしてください。")
+                        }
                     }
                 }
             }
         }
-        .onAppear{
-            speechText(text: "検査を開始します")
-            motionRecordManager.start(motionInterval: motionInterval)
+        .onReceive(timer) { _ in
+            currentTime += 1
+            if currentTime >= 0 {
+                timer.upstream.connect().cancel()
+            }
         }
         
         NavigationLink(
